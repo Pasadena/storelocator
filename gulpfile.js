@@ -43,7 +43,20 @@ function scripts(watch) {
   rebundle();
 }
 
-gulp.task('watchify', function() {
-  gutil.log('Starting shit', gutil.colors.magenta('123'));
+gulp.task('watchify', ['generate-service-worker'], function() {
   return scripts(true);
+});
+
+gulp.task('generate-service-worker', (callback) => {
+  const path = require('path');
+  const swPrecache = require('sw-precache');
+  const rootDir = 'public';
+
+  //swPrecache.write(path.join(__dirname, 'service-worker.js'), {
+  swPrecache.write(path.join(rootDir, 'service-worker.js'), {
+    //staticFileGlobs: [rootDir + '/**/*.{html,css,png,jpg,gif,svg,eot,ttf,woff}',  rootDir + '/index.html'],
+    staticFileGlobs: [rootDir + '/index.html', rootDir + '/manifest.json', rootDir + '/images/*', rootDir +'/css/styles.css',
+    '/bower_components/**/*.html'],
+    stripPrefix: rootDir
+  }, callback);
 });

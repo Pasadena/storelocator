@@ -1,0 +1,20 @@
+{
+  "name": "Vaadin PWA Test",
+  "short_name": "V-PWA",
+  "icons": [
+		{
+			"src": "/public/images/favicons/android-chrome-192x192.png",
+			"sizes": "192x192",
+			"type": "image\/png"
+		},
+		{
+			"src": "/public/images/favicons/android-chrome-512x512.png",
+			"sizes": "512x512",
+			"type": "image\/png"
+		}
+	],
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#3E4EB8",
+  "theme_color": "#2F3BA2"
+}
