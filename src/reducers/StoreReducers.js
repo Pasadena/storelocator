@@ -16,7 +16,7 @@ export const storeReducer = (state = initialState, action) => {
     case "DATE_SELECTED":
       return Object.assign({}, state, {selectedDate: action.selectedDate});
     case "STORES_LOADED":
-      return Object.assign({}, state, {stores: action.stores});
+      return Object.assign({}, state, {stores: action.stores, isLoading: false, location: action.location ? action.location : state.location});
     default:
       return state;
   }

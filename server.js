@@ -15,11 +15,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+app.use('service-worker.js', express.static(path.join(__dirname, 'service-worker.js')));
 
 const K_CHAIN_API = "http://www.k-market.fi/api/stores/searchStores";
 
 router.get("/", (request, response) => {
-  response.sendFile(__dirname + '/index.html');
+  response.sendFile(__dirname + '/public/index.html');
 });
 
 router.get("/k-proxy/:location", (req, res) => {

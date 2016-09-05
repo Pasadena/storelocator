@@ -6,4 +6,4 @@ export const dateSelected = (selectedDate) => ({ type: "DATE_SELECTED", selected
 
 export const locationSelected = (location) => ({ type: "LOCATION_SELECTED", location });
 
-export const storesLoaded = (stores) => ({ type: "STORES_LOADED", stores});
+export const storesLoaded = (stores, location) => ({ type: "STORES_LOADED", stores, location});

@@ -13,7 +13,6 @@ class LocationInput extends React.Component {
   }
 
   onChange(event) {
-    console.log(event);
     this.props.onLocationChanged(event.target.value);
   }
 

@@ -11,39 +11,75 @@ import {LocationSelector} from './components/LocationSelector';
 import {VaadinDatePicker} from "./VaadinElements";
 import {ResultArea} from "./components/ResultArea";
 
+import {getStoresWithGeolocation} from "./services/StoreLocatorService.js";
+
 const store = createStore(storeReducer, applyMiddleware(thunk));
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
+  }
 
+  componentDidMount() {
+    this.props.loadWithGeolocation();
   }
 
   render() {
+    let content = this.props.isLoading ? <Loader /> : <Content />;
     return (
-      <div className="container">
-        <p>
-          Hello Vaadin Elements World!!!!
-        </p>
-        <div className="inputs">
-          <div className="content-left">
-              <LocationSelector />
-          </div>
-          <div className="content-right">
-              <VaadinDatePicker />
-          </div>
-        </div>
-        <div className="results">
-          <ResultArea />
-        </div>
-      </div>);
+      <div style={{'width': '100%', 'height': '100%'}}>
+        {content}
+      </div>
+    );
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.isLoading
+  }
+}
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadWithGeolocation:() => {
+      dispatch(getStoresWithGeolocation());
+    }
+  }
+}
+
+const Content = () => (
+  <div className="container">
+    <div className="inputs">
+      <p>
+        Hello Vaadin Elements World!!!!
+      </p>
+      <div className="content-left">
+          <LocationSelector />
+      </div>
+      <div className="content-right">
+          <VaadinDatePicker />
+      </div>
+    </div>
+    <div className="results">
+      <ResultArea />
+    </div>
+  </div>
+);
+
+const Loader = () => (
+  <div className="container">
+    <p>Loading...</p>
+  </div>
+);
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ConnectedApp />
   </Provider>,
   document.getElementById("content")
 );

@@ -14,9 +14,6 @@ class ResultAreaContainer extends React.Component {
     }
 
     componentDidMount(props) {
-    }
-
-    componentDidUpdate(prevProps, prevState) {
       let grid = ReactDOM.findDOMNode(this);
 
       grid.columns = [
@@ -24,15 +21,16 @@ class ResultAreaContainer extends React.Component {
         { name: 'StreetAddress' },
         { name: 'OpenToday' }
       ];
-      console.log(this.props.stores);
 
       grid.size = this.props.stores.length;
-      /**this.props.stores.forEach( (store) => {
-        realNode.push('items', store);
-      });**/
       grid.items = this.props.stores;
-      //realNode.refreshItems();
-      //realNode.items = (params, callback) => callback(this.props.stores);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+      let grid = ReactDOM.findDOMNode(this);
+
+      grid.size = this.props.stores.length;
+      grid.items = this.props.stores;
     }
 
     createTableStructure() {
@@ -52,8 +50,6 @@ class ResultAreaContainer extends React.Component {
     }
 
     render() {
-      //let tableStructure = this.createTableStructure();
-      //return React.createElement('vaadin-grid', null, tableStructure);
       return React.createElement('vaadin-grid', null);
     }
 }
