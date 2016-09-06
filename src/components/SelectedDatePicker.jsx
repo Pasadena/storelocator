@@ -2,7 +2,7 @@ import ReactPolymer from "react-polymer";
 import React from 'react';
 import ReactDom from 'react-dom';
 import {connect} from 'react-redux';
-import {dateSelected} from './actions/StoreActions.js';
+import {dateSelected} from '../actions/StoreActions.js';
 
 class ElementsDatePicker extends React.Component {
   constructor(props) {

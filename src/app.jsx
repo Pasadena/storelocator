@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import {storeReducer} from './reducers/StoreReducers.js';
 
 import {LocationSelector} from './components/LocationSelector';
-import {VaadinDatePicker} from "./VaadinElements";
+import {VaadinDatePicker} from "./components/SelectedDatePicker";
 import {ResultArea} from "./components/ResultArea";
 
 import {getStoresWithGeolocation} from "./services/StoreLocatorService.js";
