@@ -9,16 +9,22 @@ import {getAdjacentStores} from '../services/StoreLocatorService.js'
 class LocationInput extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {value: this.props.location};
     this.onChange = this.onChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
   }
 
   onChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  onBlur(event) {
     this.props.onLocationChanged(event.target.value);
   }
 
   render() {
     return (
-      <PaperInput value={this.props.location} label="Location" placeHolder="Enter location..." onChange = { this.onChange }/>
+      <PaperInput value={this.state.value} label="Location" placeHolder="Enter location..." onChange = { this.onChange } onBlur= {this.onBlur}/>
     )
   }
 }
