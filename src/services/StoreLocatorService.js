@@ -1,6 +1,7 @@
 import NodeGeocoder from "node-geocoder";
 import request from 'request';
-import {processingRequest, storesLoaded, requestFailed} from '../actions/StoreActions'
+import $ from 'jquery';
+import {processingRequest, storesLoaded, requestFailed, locationSelected} from '../actions/StoreActions'
 
 import HttpsAdapter from "node-geocoder/lib/httpadapter/httpsadapter.js";
 
@@ -37,37 +38,37 @@ export const getAdjacentStores = (location) => {
   }
 }
 
-const loadStoresForLocation = (geoLocation, dispatch) => {
-  request("http://localhost:3000/k-proxy/:" +geoLocation.city, (error, response, body) => {
-    if(error) {
-      console.log(error);
-      dispatch(requestFailed());
-    } else {
-      dispatch(storesLoaded(JSON.parse(body), geoLocation.formattedAddress));
-    }
-  });
-}
-
 export const getStoresWithGeolocation  = () => {
   return dispatch => {
     dispatch(processingRequest());
-    getGeolocation(reverseGeolocation, dispatch);
+    getGeolocation(dispatch)
+    .then(res => {
+      reverseGeolocation(res, dispatch);
+    }, err => {
+      console.log(err);
+      dispatch(requestFailed());
+    });
   }
 }
 
-const getGeolocation = (callback, dispatch) => {
+const getGeolocation = () => {
+  let deferred = $.Deferred();
   if (navigator.geolocation) {
-    return navigator.geolocation.getCurrentPosition((res) => {
-      callback(res, dispatch);
-    });
+    navigator.geolocation.getCurrentPosition(deferred.resolve, deferred.reject);
+  } else {
+    deferred.reject(new Error('Your broser does not support geolocation!'));
   }
-  return null;
+  return deferred.promise();
 }
 
 const reverseGeolocation = (geoLocation, dispatch) => {
   geocoder.reverse({lat: geoLocation.coords.latitude, lon: geoLocation.coords.longitude})
   .then(res => {
-    loadStoresForLocation(res[0], dispatch);
+    dispatch(locationSelected(res[0].formattedAddress));
+    dispatch(getAdjacentStores(res[0].city))
   })
-  .error(err => console.log(err));
+  .error(err => {
+    console.log(err);
+    dispatch(requestFailed());
+  });
 }
