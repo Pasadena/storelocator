@@ -10,7 +10,6 @@ class ResultAreaContainer extends React.Component {
 
     constructor(props) {
       super(props);
-      this.createTableStructure = this.createTableStructure.bind(this);
     }
 
     componentDidMount(props) {
@@ -19,9 +18,9 @@ class ResultAreaContainer extends React.Component {
       grid.columns = [
         { name: 'Name' },
         { name: 'StreetAddress' },
-        { name: 'OpenToday' }
+        { name: 'OpenToday' },
+        { name: 'Distance' }
       ];
-
       grid.size = this.props.stores.length;
       grid.items = this.props.stores;
     }
@@ -31,22 +30,6 @@ class ResultAreaContainer extends React.Component {
 
       grid.size = this.props.stores.length;
       grid.items = this.props.stores;
-    }
-
-    createTableStructure() {
-      return (
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>StreetAddress</th>
-              <th>OpenToday</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      );
     }
 
     render() {
