@@ -32,10 +32,21 @@ export const getAdjacentStores = (location) => {
         console.log(error);
         dispatch(requestFailed());
       } else {
-        dispatch(storesLoaded(JSON.parse(body)));
+        let stores = JSON.parse(body);
+        dispatchSortedStores(dispatch, stores);
+
       }
     });
   }
+}
+
+const dispatchSortedStores = (dispatch, storesToBeSorted) => {
+  storesToBeSorted.sort( (first, second) => {
+    let firstDistance = first.Distance.replace("km", "").trim();
+    let secondDistance = second.Distance.replace("km", "").trim();
+    return parseFloat(firstDistance) - parseFloat(secondDistance) < 0 ? -1 : 1;
+  });
+  dispatch(storesLoaded(storesToBeSorted));
 }
 
 export const getStoresWithGeolocation  = () => {

@@ -36,7 +36,6 @@ router.get("/k-proxy/:location", (req, res) => {
     let stores = JSON.parse(body);
     calculateDistanceMatrix(location , getStoreLocationsAsCoordinates(stores))
     .then(result => {
-      console.log(result);
       stores.map( (store, index) => store.Distance = result[index].distance);
       res.send(stores);
     });
