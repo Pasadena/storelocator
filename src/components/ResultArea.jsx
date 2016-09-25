@@ -16,13 +16,14 @@ class ResultAreaContainer extends React.Component {
       let grid = ReactDOM.findDOMNode(this);
 
       grid.columns = [
-        { name: 'Name' },
-        { name: 'StreetAddress' },
-        { name: 'OpenToday' },
+        { name: 'name' },
+        { name: 'vicinity' },
+        { name: 'opening_hours.open_now' },
         { name: 'Distance' }
       ];
       grid.size = this.props.stores.length;
       grid.items = this.props.stores;
+      console.log(this.props.stores);
     }
 
     componentDidUpdate(prevProps, prevState) {

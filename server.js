@@ -7,6 +7,9 @@ const Request = require("request");
 const bodyParser = require('body-parser');
 const distance = require('google-distance');
 const Promise = require('promise');
+const GoogleLocations = require('google-locations');
+
+const locations = new GoogleLocations('AIzaSyACuf5152Ocl7UJtZATACufBo-NQW78djE');
 
 const app = express();
 const port = 3000;
@@ -31,24 +34,31 @@ router.get("/", (request, response) => {
 router.get("/k-proxy/:location", (req, res) => {
   const location = req.params.location.replace(":", "");
   const queryAddress = K_CHAIN_API + "?query=" + location;
-
-  Request(queryAddress, (error, response, body) => {
-    let stores = JSON.parse(body);
-    calculateDistanceMatrix(location , getStoreLocationsAsCoordinates(stores))
+  locations.search({
+    location: [location.split(",").map(locPart => parseFloat(locPart))],
+    radius: 5000,
+    types: [ "grocery_or_supermarket" ]
+  }, (err, response) => {
+    let stores = [];
+    for(var storeIndex in response.results) {
+      let storePart = response.results[storeIndex];
+      stores.push(storePart);
+    }
+    calculateDistanceMatrix(stores, getStoreLocationsAsCoordinates(stores))
     .then(result => {
       stores.map( (store, index) => store.Distance = result[index].distance);
       res.send(stores);
-    });
+    }, error => console.log(error));
   });
 });
 
 const getStoreLocationsAsCoordinates = (stores) => {
-  return stores.map((store) => store.Latitude + "," + store.Longitude)
+  return stores.map((store) => store.geometry.location.lat + "," + store.geometry.location.lng)
 }
 
 const calculateDistanceMatrix = (origin, destinations) => {
   return calculateDistance({
-    origins: [ origin ],
+    origins: origin,
     destinations: destinations,
     mode: 'walking',
     key: 'AIzaSyACuf5152Ocl7UJtZATACufBo-NQW78djE'

@@ -4,7 +4,7 @@ import {PaperInput} from "react-polymer/input";
 
 import {connect} from 'react-redux';
 import {locationSelected} from '../actions/StoreActions.js';
-import {getAdjacentStores} from '../services/StoreLocatorService.js'
+import {getNearbyStores} from '../services/StoreLocatorService.js'
 
 class LocationInput extends React.Component {
   constructor(props) {
@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLocationChanged(location) {
       dispatch(locationSelected(location));
-      dispatch(getAdjacentStores(location));
+      dispatch(getNearbyStores(location));
     }
   }
 }
