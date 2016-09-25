@@ -2,6 +2,7 @@
   "name": "Foo",
   "description": "Foobar",
   "scripts": {
+    "postinstall": "bower install",
     "compile": "babel --watch --presets es2015,react src/ -d public/ --s",
     "bundle": "browserify public/app.js > public/bundle.js -d",
     "watch": "watchify public/app.js -o public/bundle.js -v",
