@@ -25,9 +25,6 @@ var bundler = browserify(config.js.src, { debug: true, cache: {}, packageCache: 
 
 var wathedBundler = watchify(bundler);
 
-//var wathedBundler = watchify(browserify(config.js.src, { debug: true, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
-//.transform(babelify, { presets: ['es2015', 'react']}));
-
 function scripts(watch) {
   function rebundle() {
     wathedBundler.bundle()

@@ -44,11 +44,13 @@ router.get("/k-proxy/:location", (req, res) => {
       let storePart = response.results[storeIndex];
       stores.push(storePart);
     }
-    calculateDistanceMatrix(stores, getStoreLocationsAsCoordinates(stores))
+    stores.map( (store, index) => store.Distance = "5 km");
+    res.send(stores);
+    /**calculateDistanceMatrix(stores, getStoreLocationsAsCoordinates(stores))
     .then(result => {
       stores.map( (store, index) => store.Distance = result[index].distance);
       res.send(stores);
-    }, error => console.log(error));
+    }, error => console.log(error));**/
   });
 });
 
