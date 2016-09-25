@@ -12,7 +12,7 @@ const GoogleLocations = require('google-locations');
 const locations = new GoogleLocations('AIzaSyACuf5152Ocl7UJtZATACufBo-NQW78djE');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT ? process.env.PORT : 3000;
 
 let router = express.Router();
 
