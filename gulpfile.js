@@ -7,6 +7,8 @@ var buffer = require('vinyl-buffer');
 var browserify = require("browserify");
 var watchify = require("watchify");
 var babelify = require("babelify");
+var uglify = require("gulp-uglify");
+var envify = require("envify");
 var gutil = require('gulp-util');
 
 // Configuration for Gulp
@@ -18,13 +20,17 @@ var config = {
     outputFile: './public/bundle.js',
   }
 };
+var bundler = browserify(config.js.src, { debug: true, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
+.transform(babelify, { presets: ['es2015', 'react']});
+
+var wathedBundler = watchify(bundler);
+
+//var wathedBundler = watchify(browserify(config.js.src, { debug: true, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
+//.transform(babelify, { presets: ['es2015', 'react']}));
 
 function scripts(watch) {
-  var bundler = watchify(browserify(config.js.src, { debug: true, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
-  .transform(babelify, { presets: ['es2015', 'react']}));
-
   function rebundle() {
-    bundler.bundle()
+    wathedBundler.bundle()
       .on('error', function(err) { console.error(err); this.emit('end'); })
       .pipe(source('bundle.js'))
       .pipe(buffer())
@@ -34,14 +40,33 @@ function scripts(watch) {
   }
 
   if (watch) {
-    bundler.on('update', function() {
-      console.log('-> bundling...');
+    wathedBundler.on('update', function() {
+      gutil.log('-> bundling...');
       rebundle();
     });
   }
 
   rebundle();
 }
+
+function buildProd() {
+  function bundle() {
+    bundler.trasform(envify({
+      NODE_ENV: 'production'
+    }));
+    bundler.bundle()
+      .on('error', function(err) { console.error(err); this.emit('end'); })
+      .pipe(source('bundle.min.js'))
+      .pipe(buffer())
+      .pipe(uglify())
+      .pipe(gulp.dest('./public'));
+  }
+  bundle();
+}
+
+gulp.task('dist', function() {
+  return buildProd();
+});
 
 gulp.task('watchify', ['generate-service-worker'], function() {
   return scripts(true);
@@ -52,9 +77,7 @@ gulp.task('generate-service-worker', (callback) => {
   const swPrecache = require('sw-precache');
   const rootDir = 'public';
 
-  //swPrecache.write(path.join(__dirname, 'service-worker.js'), {
   swPrecache.write(path.join(rootDir, 'service-worker.js'), {
-    //staticFileGlobs: [rootDir + '/**/*.{html,css,png,jpg,gif,svg,eot,ttf,woff}',  rootDir + '/index.html'],
     staticFileGlobs: [rootDir + '/index.html', rootDir + '/manifest.json', rootDir + '/images/*', rootDir +'/css/styles.css',
     '/bower_components/**/*.html'],
     stripPrefix: rootDir

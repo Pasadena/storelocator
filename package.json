@@ -6,11 +6,13 @@
     "bundle": "browserify public/app.js > public/bundle.js -d",
     "watch": "watchify public/app.js -o public/bundle.js -v",
     "bundle2": " watchify browserify public/app.js -o public/bundle.js -t [ babelify --presets [ es2015 react ] ]",
-    "start-dev": "gulp watchify | node server.js"
+    "start-dev": "gulp watchify | node server.js",
+    "dist": "gulp dist | node server.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
     "browserify": "^13.1.0",
+    "envify": "^3.4.1",
     "express": "^4.14.0",
     "google-distance": "^1.0.1",
     "jquery": "^3.1.0",
@@ -31,6 +33,7 @@
     "babelify": "^7.3.0",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "http-server": "^0.9.0",
     "serve": "^1.4.0",
