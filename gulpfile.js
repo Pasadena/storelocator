@@ -8,7 +8,7 @@ var browserify = require("browserify");
 var watchify = require("watchify");
 var babelify = require("babelify");
 var uglify = require("gulp-uglify");
-var envify = require("envify");
+var envify = require("envify/custom");
 var gutil = require('gulp-util');
 
 // Configuration for Gulp
@@ -48,15 +48,16 @@ function scripts(watch) {
 
 function buildProd() {
   function bundle() {
-    bundler.trasform(envify({
-      NODE_ENV: 'production'
+    bundler.transform(envify({
+      NODE_ENV: "production"
     }));
     bundler.bundle()
       .on('error', function(err) { console.error(err); this.emit('end'); })
-      .pipe(source('bundle.js'))
+      .on('stop', () => { console.log("Foobar"); process.exit(0); })
+      .pipe(source("bundle.js"))
       .pipe(buffer())
       .pipe(uglify())
-      .pipe(gulp.dest('./public'));
+      .pipe(gulp.dest("./public"));
   }
   bundle();
 }
