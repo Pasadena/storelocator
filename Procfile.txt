@@ -1,1 +1,1 @@
-web: PORT=$PORT bower install --save vaadin-core-elements | gulp dist | node server.js
+web: PORT=$PORT gulp dist | node server.js
