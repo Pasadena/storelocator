@@ -53,7 +53,7 @@ function buildProd() {
     }));
     bundler.bundle()
       .on('error', function(err) { console.error(err); this.emit('end'); })
-      .pipe(source('bundle.min.js'))
+      .pipe(source('bundle.js'))
       .pipe(buffer())
       .pipe(uglify())
       .pipe(gulp.dest('./public'));
@@ -61,7 +61,7 @@ function buildProd() {
   bundle();
 }
 
-gulp.task('dist', function() {
+gulp.task('dist', ['generate-service-worker'], function() {
   return buildProd();
 });
 

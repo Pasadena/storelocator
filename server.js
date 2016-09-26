@@ -13,6 +13,7 @@ const locations = new GoogleLocations('AIzaSyACuf5152Ocl7UJtZATACufBo-NQW78djE')
 
 const app = express();
 const port = process.env.PORT ? process.env.PORT : 3000;
+const env = process.env.NODE_ENV ? process.env.NODE_ENV : "development";
 
 let router = express.Router();
 
@@ -75,4 +76,5 @@ app.listen(port, (err) => {
     return console.log("Unexpected error encountered! ");
   }
   console.log("Server start with port " +port);
+  console.log("We are running application in " + env + " mode");
 });
