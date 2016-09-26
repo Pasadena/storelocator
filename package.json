@@ -38,11 +38,11 @@
     "sw-precache": "^4.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "babel-cli": "^6.11.4"
+    "babel-cli": "^6.11.4",
+    "watchify": "^3.7.0"
   },
   "devDependencies": {
     "http-server": "^0.9.0",
-    "serve": "^1.4.0",
-    "watchify": "^3.7.0"
+    "serve": "^1.4.0"
   }
 }
