@@ -1,31 +1,30 @@
 const gulp = require("gulp");
 
-var sourcemaps = require('gulp-sourcemaps');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
+const sourcemaps = require('gulp-sourcemaps');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
 
-var browserify = require("browserify");
-var watchify = require("watchify");
-var babelify = require("babelify");
-var uglify = require("gulp-uglify");
-var envify = require("envify/custom");
-var gutil = require('gulp-util');
+const browserify = require("browserify");
+const watchify = require("watchify");
+const babelify = require("babelify");
+const uglify = require("gulp-uglify");
+const envify = require("envify/custom");
+const gutil = require('gulp-util');
 
 // Configuration for Gulp
-var config = {
+const config = {
   js: {
     src: './src/app.jsx',
-    watch: './src/**/*',
     outputDir: './public/',
     outputFile: './public/bundle.js',
   }
 };
-var bundler = browserify(config.js.src, { debug: true, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
+const bundler = browserify("./server.js", { debug: false, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
 .transform(babelify, { presets: ['es2015', 'react']});
 
-var wathedBundler = watchify(bundler);
+const wathedBundler = watchify(bundler);
 
-function scripts(watch) {
+const scripts = (watch) => {
   function rebundle() {
     wathedBundler.bundle()
       .on('error', function(err) { console.error(err); this.emit('end'); })
@@ -46,27 +45,20 @@ function scripts(watch) {
   rebundle();
 }
 
-function buildProd() {
-  function bundle() {
-    bundler.transform(envify({
-      NODE_ENV: "production"
-    }));
-    bundler.bundle()
-      .on('error', function(err) { console.error(err); this.emit('end'); })
-      .on('stop', () => { console.log("Foobar"); process.exit(0); })
-      .pipe(source("bundle.js"))
-      .pipe(buffer())
-      .pipe(uglify())
-      .pipe(gulp.dest("./public"));
-  }
-  bundle();
-}
-
-gulp.task('dist', ['generate-service-worker'], function() {
-  return buildProd();
+gulp.task('dist', ['generate-service-worker'], () => {
+    //TODO: Find out why gulp task hangs forever when bundler is declared in it's own variable
+    return browserify(config.js.src, { debug: false, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
+    .transform(babelify, { presets: ['es2015', 'react']})
+    .transform(envify({ NODE_ENV: "production"}))
+    .bundle()
+    .on('error', (err) => { console.error(err); this.emit('end'); })
+    .pipe(source("bundle.js"))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest("./public"));
 });
 
-gulp.task('watchify', ['generate-service-worker'], function() {
+gulp.task('watchify', ['generate-service-worker'], () => {
   return scripts(true);
 });
 
