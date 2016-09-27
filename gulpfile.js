@@ -19,7 +19,7 @@ const config = {
     outputFile: './public/bundle.js',
   }
 };
-const bundler = browserify("./server.js", { debug: false, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
+const bundler = browserify("./server.js", { debug: true, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
 .transform(babelify, { presets: ['es2015', 'react']});
 
 const wathedBundler = watchify(bundler);
@@ -47,9 +47,9 @@ const scripts = (watch) => {
 
 gulp.task('dist', ['generate-service-worker'], () => {
     //TODO: Find out why gulp task hangs forever when bundler is declared in it's own variable
-    return browserify(config.js.src, { debug: false, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
+    return browserify({ entries: config.js.src, debug: false, extensions: ['.jsx'] })
+    .transform(envify())
     .transform(babelify, { presets: ['es2015', 'react']})
-    .transform(envify({ NODE_ENV: "production"}))
     .bundle()
     .on('error', (err) => { console.error(err); this.emit('end'); })
     .pipe(source("bundle.js"))

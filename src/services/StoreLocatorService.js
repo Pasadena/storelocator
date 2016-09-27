@@ -1,4 +1,4 @@
-import request from 'request';
+import $ from 'jquery';
 import {processingRequest, storesLoaded, requestFailed, locationSelected} from '../actions/StoreActions'
 import {addressToLocation, getCurrentCoordinates, locationToAddress, geocoder} from './GeoService.js';
 
@@ -34,14 +34,14 @@ export const getStoresWithGeolocation  = () => {
 const fetchStores = (location, dispatch) => {
   return dispatch => {
     let queryAddress = K_CHAIN_API + "?query=" + location;
-    request(window.location.href + "k-proxy/:" +location, (error, response, body) => {
-      if(error) {
-        console.log(error);
-        dispatch(requestFailed());
-      } else {
-        let stores = JSON.parse(body);
-        dispatchSortedStores(dispatch, stores);
-      }
+    $.get(window.location.href + "k-proxy/:" +location)
+    .done(data => {
+      console.log(data);
+      dispatchSortedStores(dispatch, data);
+    })
+    .fail(err => {
+      console.log(error);
+      dispatch(requestFailed());
     });
   }
 }

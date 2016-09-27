@@ -1,20 +1,10 @@
 import NodeGeocoder from "node-geocoder";
 import $ from 'jquery';
 
-import HttpsAdapter from "node-geocoder/lib/httpadapter/httpsadapter.js";
-
-const httpAdapter = new HttpsAdapter(null, {
-  headers: {
-    "Accept-Language": "fi-FI",
-    "Content-Language": "fi-FI"
-  }
-});
-
 const geoOptions = {
   provider: 'google',
   language: "fi-FI",
-  region: "FI",
-  httpAdapter: httpAdapter
+  region: "FI"
 }
 
 export const geocoder = NodeGeocoder(geoOptions);
