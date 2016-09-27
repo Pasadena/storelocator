@@ -34,7 +34,7 @@ export const getStoresWithGeolocation  = () => {
 const fetchStores = (location, dispatch) => {
   return dispatch => {
     let queryAddress = K_CHAIN_API + "?query=" + location;
-    request("http://localhost:3000/k-proxy/:" +location, (error, response, body) => {
+    request(window.location.href + "k-proxy/:" +location, (error, response, body) => {
       if(error) {
         console.log(error);
         dispatch(requestFailed());
