@@ -2,7 +2,7 @@
   "name": "Foo",
   "description": "Foobar",
   "scripts": {
-    "postinstall": "bower install --save vaadin-core-elements && gulp dist",
+    "postinstall": "bower install --save vaadin-core-elements && NODE_ENV=production gulp dist",
     "compile": "babel --watch --presets es2015,react src/ -d public/ --s",
     "bundle": "browserify public/app.js > public/bundle.js -d",
     "watch": "watchify public/app.js -o public/bundle.js -v",
