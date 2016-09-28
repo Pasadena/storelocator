@@ -52,10 +52,12 @@ const mapDispatchToProps = (dispatch) => {
 
 const Content = () => (
   <div className="container">
+    <div className="header">
+      <h1>Store Locator <sup>TM</sup>
+        <p className="slogan">Find the nearest stores</p>
+      </h1>
+    </div>
     <div className="inputs">
-      <p>
-        Hello Vaadin Elements World!!!!
-      </p>
       <div className="content-left">
           <LocationSelector />
       </div>

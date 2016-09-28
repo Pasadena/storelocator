@@ -2,7 +2,8 @@
 
 html,
 body {
-    height: 100%;
+  height: 100%;
+  background-color: #ebedf9;
 }
 
 body {
@@ -21,6 +22,10 @@ h2 {
 
 h1, h2, strong {
   color: #333;
+}
+
+sup {
+  font-size: small;
 }
 
 code, pre {
@@ -44,7 +49,20 @@ a {
 }
 
 #content {
+  padding: 1%;
   height: 100%;
+}
+
+.header {
+  height: 20%;
+  text-align: center;
+}
+
+.slogan {
+  font-style: italic;
+  font-size: 60%;
+  padding-left: 5%;
+  line-height: 0.1em;
 }
 
 .container {
