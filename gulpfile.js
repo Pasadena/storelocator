@@ -19,7 +19,7 @@ const config = {
     outputFile: './public/bundle.js',
   }
 };
-const bundler = browserify("./server.js", { debug: true, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
+const bundler = browserify(config.js.src, { debug: true, cache: {}, packageCache: {}, fullPaths: true, extensions: ['.jsx'] })
 .transform(babelify, { presets: ['es2015', 'react']});
 
 const wathedBundler = watchify(bundler);

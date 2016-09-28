@@ -11,7 +11,7 @@ export const getNearbyStores = (address) => {
       if(err) {
         dispatch(requestFailed());
       } else {
-        fetchStores(data, dispatch)
+        dispatch(fetchStores(data));
       }
     });
   }
@@ -31,16 +31,15 @@ export const getStoresWithGeolocation  = () => {
   }
 }
 
-const fetchStores = (location, dispatch) => {
+const fetchStores = (location) => {
   return dispatch => {
-    let queryAddress = K_CHAIN_API + "?query=" + location;
-    $.get(window.location.href + "k-proxy/:" +location)
+    let queryAddress = window.location.origin + "/k-proxy/:" +location;
+    $.get(queryAddress)
     .done(data => {
-      console.log(data);
       dispatchSortedStores(dispatch, data);
     })
     .fail(err => {
-      console.log(error);
+      console.log(err);
       dispatch(requestFailed());
     });
   }
