@@ -40,3 +40,4 @@ jspm_packages
 public/bundle.js
 public/bundle.js.map
 public/bundle.min.js
+public/service-worker.js

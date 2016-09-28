@@ -46,16 +46,17 @@ const scripts = (watch) => {
 }
 
 gulp.task('dist', ['generate-service-worker'], () => {
-    //TODO: Find out why gulp task hangs forever when bundler is declared in it's own variable
-    return browserify({ entries: config.js.src, debug: false, extensions: ['.jsx'] })
-    .transform(envify())
-    .transform(babelify, { presets: ['es2015', 'react']})
-    .bundle()
-    .on('error', (err) => { console.error(err); this.emit('end'); })
-    .pipe(source("bundle.js"))
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe(gulp.dest("./public"));
+  gutil.log("Current mode is " + process.env.NODE_ENV);
+  //TODO: Find out why gulp task hangs forever when bundler is declared in it's own variable
+  return browserify({ entries: config.js.src, debug: false, extensions: ['.jsx'] })
+  .transform(envify())
+  .transform(babelify, { presets: ['es2015', 'react']})
+  .bundle()
+  .on('error', (err) => { console.error(err); this.emit('end'); })
+  .pipe(source("bundle.js"))
+  .pipe(buffer())
+  .pipe(uglify())
+  .pipe(gulp.dest("./public"));
 });
 
 gulp.task('watchify', ['generate-service-worker'], () => {
@@ -68,8 +69,8 @@ gulp.task('generate-service-worker', (callback) => {
   const rootDir = 'public';
 
   swPrecache.write(path.join(rootDir, 'service-worker.js'), {
-    staticFileGlobs: [rootDir + '/index.html', rootDir + '/manifest.json', rootDir + '/images/*', rootDir +'/css/styles.css',
-    '/bower_components/**/*.html'],
+    staticFileGlobs: [rootDir + '/index.html', rootDir + '/manifest.json', rootDir + 'images/*', rootDir +'/css/styles.css',
+      'bower_components/**/*.{js,html,css,png,jpg,gif}'],
     stripPrefix: rootDir
   }, callback);
 });

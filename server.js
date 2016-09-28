@@ -23,8 +23,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
-app.use('/bower_components',  express.static(__dirname + '/bower_components'));
-app.use('service-worker.js', express.static(path.join(__dirname, 'service-worker.js')));
+
+app.use('/bower_components/',
+  express.static(__dirname + '/bower_components/'));
+app.use('/bower_components/vaadin-date-picker/vaadin-date-picker.html',
+    express.static(__dirname + '/bower_components/vaadin-date-picker/vaadin-date-picker.html'));
+app.use('/bower_components/vaadin-grid/vaadin-grid.html',
+    express.static(__dirname + '/bower_components/vaadin-grid/vaadin-grid.html'));
 
 const K_CHAIN_API = "http://www.k-market.fi/api/stores/searchStores";
 
