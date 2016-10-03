@@ -18,8 +18,8 @@ class ResultAreaContainer extends React.Component {
       grid.columns = [
         { name: 'name' },
         { name: 'vicinity' },
-        { name: 'opening_hours.open_now' },
-        { name: 'Distance' }
+        { name: 'openNow' },
+        { name: 'distance' }
       ];
       grid.size = this.props.stores.length;
       grid.items = this.props.stores;

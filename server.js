@@ -50,15 +50,28 @@ router.get("/k-proxy/:location", (req, res) => {
       let storePart = response.results[storeIndex];
       stores.push(storePart);
     }
-    stores.map( (store, index) => store.Distance = "5 km");
+    stores.map( (store, index) => {
+      store.distance = "5 km";
+      store.openNow = isStoreOpen(store);
+    });
     res.send(stores);
     /**calculateDistanceMatrix(stores, getStoreLocationsAsCoordinates(stores))
     .then(result => {
-      stores.map( (store, index) => store.Distance = result[index].distance);
+      stores.map( (store, index) => {
+        store.distance = result[index].distance;
+        store.openNow = isStoreOpen(store);
+      });
       res.send(stores);
     }, error => console.log(error));**/
   });
 });
+
+const isStoreOpen = (store) => {
+  if(!store.opening_hours) {
+    return "???";
+  }
+  return store.opening_hours.open_now ? "Yes" : "No";
+}
 
 const getStoreLocationsAsCoordinates = (stores) => {
   return stores.map((store) => store.geometry.location.lat + "," + store.geometry.location.lng)

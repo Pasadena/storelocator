@@ -47,8 +47,8 @@ const fetchStores = (location) => {
 
 const dispatchSortedStores = (dispatch, storesToBeSorted) => {
   storesToBeSorted.sort( (first, second) => {
-    let firstDistance = first.Distance.replace("km", "").trim();
-    let secondDistance = second.Distance.replace("km", "").trim();
+    let firstDistance = first.distance.replace("km", "").trim();
+    let secondDistance = second.distance.replace("km", "").trim();
     return parseFloat(firstDistance) - parseFloat(secondDistance) < 0 ? -1 : 1;
   });
   dispatch(storesLoaded(storesToBeSorted));
